@@ -1,3 +1,5 @@
+package FullGame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,7 +12,7 @@ public class Pyatnashki extends JFrame {
     static int[] invariants = new int[16];
 
     public Pyatnashki() {
-        super("Pyatnashki");
+        super("FullGame.Pyatnashki");
 
         setBounds(200, 200, 300, 300);
         setResizable(false);

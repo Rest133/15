@@ -1,3 +1,5 @@
+package FullGame;
+
 class Algorithm {
     int count;
 
