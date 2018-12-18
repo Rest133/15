@@ -11,18 +11,20 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionList
 public class Cell extends JComponent implements MouseListener, MouseMotionListener {
     static Cell NO_NEIGHBOUR = new Cell(-1,Integer.MAX_VALUE);
 
-    private int mass = 0;
+    private int mass;
     private int numberOnCell;
-    private Cell algorithmNeighbour;
+    private Cell algorithmNeighbour = null;
     private Cell leftCell, rightCell, upCell, downCell;
     private boolean hasO = false; //пригодится или нет?
     private boolean mousePressed = false;
+    private boolean wasVisited = false;
+
     private Font font = new Font("TimesRoman", Font.BOLD, 50);
 
-    Cell(int n, int m) {
+    Cell(int n,int m) {
         numberOnCell = n;
-        mass = m;
         this.addMouseListener(this);
+        mass = m;
     }
 
     public void setLeftCell(Cell lCell) {
@@ -47,6 +49,10 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
 
     public void setAlgorithmNeighbour(Cell algorithmNeighbour) {
         this.algorithmNeighbour = algorithmNeighbour;
+    }
+
+    public void setWasVisited(boolean wasVisited) {
+        this.wasVisited = wasVisited;
     }
 
     public int getNumberOnCell() {
@@ -77,6 +83,10 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
         return algorithmNeighbour;
     }
 
+    public boolean isWasVisited() {
+        return wasVisited;
+    }
+
     public boolean canChange() {
         if ((getLeftCell().getNumberOnCell() == 0 || getRightCell().getNumberOnCell() == 0
                 || getUpCell().getNumberOnCell() == 0 || getDownCell().getNumberOnCell() == 0)) hasO = true;
@@ -84,26 +94,23 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
     }
 
     public void change(Cell this) {
+        int num = numberOnCell;
         if (getUpCell().getNumberOnCell() == 0) {
-            int num = numberOnCell;
             numberOnCell = this.getUpCell().getNumberOnCell();
             getUpCell().numberOnCell = num;
             this.getUpCell().repaint();
 
         } else if (getDownCell().getNumberOnCell() == 0) {
-            int num = numberOnCell;
             numberOnCell = this.getDownCell().getNumberOnCell();
             getDownCell().numberOnCell = num;
             this.getDownCell().repaint();
 
         } else if (getRightCell().getNumberOnCell() == 0) {
-            int num = numberOnCell;
             numberOnCell = this.getRightCell().getNumberOnCell();
             getRightCell().numberOnCell = num;
             this.getRightCell().repaint();
 
         } else if (getLeftCell().getNumberOnCell() == 0) {
-            int num = numberOnCell;
             numberOnCell = this.getLeftCell().getNumberOnCell();
             getLeftCell().numberOnCell = num;
             this.getLeftCell().repaint();

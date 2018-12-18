@@ -8,7 +8,7 @@ public class Game {
 
     public static void main(String[] args) {
         Game game = new Game();
-        game.createNewGame(4);
+        game.createNewGame(3);
     }
 
     public void createNewGame(int cellBoard) {
@@ -24,7 +24,6 @@ public class Game {
                 break;
             }
         }
-        gui.setVisible(false);
         gui.disposeGui();
         if (endGame) createNewGame(cellBoard);
     }
