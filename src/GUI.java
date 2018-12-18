@@ -16,7 +16,7 @@ public class GUI extends Canvas{
         jFrame.add(jPanel);
         jPanel.setLayout(new GridLayout(Game.board.getCells(), Game.board.getCells()));
 
-        for (Cell x : Board.cellsList) {
+        for (Cell x : Game.board.getCellsList()) {
             jPanel.add(x);
         }
     }

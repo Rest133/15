@@ -4,15 +4,17 @@ import java.util.*;
 
 public class Game {
     static Board board;
+
     public static void main(String[] args) {
-        board = new Board(3);
+        board = new Board(2);
         GUI gui = new GUI();
-        while (true){
-            if(Board.listWin.equals(Board.cellsList)){
+        while (true) {
+            if (board.winGame()) {
                 System.out.println("Вы выиграли");
                 break;
             }
         }
+        System.exit(0);
     }
 
 }

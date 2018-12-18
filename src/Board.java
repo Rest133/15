@@ -1,13 +1,12 @@
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Timer;
+
 
 public class Board {
     private int cells;
-    static List<Cell> cellsList;
-    static List<Cell> listWin;
-
+    private List<Cell> cellsList;
+    private List<Cell> winList;
     public Board(int c) {
         cells = c;
         createBoard();
@@ -19,19 +18,19 @@ public class Board {
 
     void createBoard() {
         cellsList = new LinkedList<>();
-        listWin = new LinkedList<>();
+        winList= new LinkedList<>();
         for (int i = 1; i < cells * cells; i++) {
             cellsList.add(new Cell(i));
-            listWin.add(new Cell(i));
+            winList.add(new Cell(i));
         }
         cellsList.add(new Cell(0));
-        listWin.add(new Cell(0));
+        winList.add(new Cell(0));
 //------------------------------------------------------
         System.out.print("Новая игра: ");
         Collections.shuffle(cellsList);
-        for (int i = 0; i < listWin.size(); i++) {
+        for (int i = 0; i < winList.size(); i++) {
             if (i % cells == 0) System.out.println();
-            System.out.print(" " + listWin.get(i).getNumberOnCell());
+            System.out.print(" " + winList.get(i).getNumberOnCell());
         }
         System.out.println();
 //----------------------------------------------------- Создание графа
@@ -60,7 +59,18 @@ public class Board {
         System.out.println();
     }
 
+    public List<Cell> getCellsList() {
+        return cellsList;
+    }
 
+    public boolean winGame() {
+        int count = 0;
+        for (int i = 0; i < cellsList.size(); i++) {
+            if (this.getCellsList().get(i).getNumberOnCell() == winList.get(i).getNumberOnCell()) count++;
+        }
+        if (count == this.getCellsList().size()) return true;
+        return false;
+    }
 }
 //------------------------------------------------------Ниже коды проверок(на всякий случай)
     /*    System.out.println(cellsList.size() + " - cellList"); //Начало новой игры

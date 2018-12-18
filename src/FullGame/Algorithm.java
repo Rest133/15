@@ -2,7 +2,6 @@ package FullGame;
 
 class Algorithm {
     int count;
-
      Algorithm() {
         for (int k = 0; k < 16; k++) {
             for (int j = k; j < Pyatnashki.invariants.length; j++) {
@@ -79,10 +78,5 @@ class Algorithm {
 
         if (count % 2 != 0) System.out.println("Нерешаемая комбинация");
 
-        //Combination
-        for (int x : Pyatnashki.invariants){
-            if(x==1) System.out.println("Единица найдена");
-
-        }
     }
 }

@@ -64,76 +64,58 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
         return hasO;
     }
 
-    public void changeLeft(Cell this) {
-        if (getLeftCell().getNumberOnCell() == 0) {
-            int num = NumberOnCell;
-            NumberOnCell = this.getLeftCell().getNumberOnCell();
-            getLeftCell().NumberOnCell = num;
-        }
-        repaint();
-        this.getLeftCell().repaint();
-    }
-
-    public void changeRight(Cell this) {
-        if (getRightCell().getNumberOnCell() == 0) {
-            int num = NumberOnCell;
-            NumberOnCell = this.getRightCell().getNumberOnCell();
-            getRightCell().NumberOnCell = num;
-        }
-        repaint();
-        this.getRightCell().repaint();
-    }
-
-    public void changeUp(Cell this) {
+    public void change(Cell this) {
         if (getUpCell().getNumberOnCell() == 0) {
             int num = NumberOnCell;
             NumberOnCell = this.getUpCell().getNumberOnCell();
             getUpCell().NumberOnCell = num;
-        }
-        repaint();
-        this.getUpCell().repaint();
-    }
+            this.getUpCell().repaint();
 
-    public void changeDown(Cell this) {
-        if (getDownCell().getNumberOnCell() == 0) {
+        } else if (getDownCell().getNumberOnCell() == 0) {
             int num = NumberOnCell;
             NumberOnCell = this.getDownCell().getNumberOnCell();
             getDownCell().NumberOnCell = num;
+            this.getDownCell().repaint();
+
+        } else if (getRightCell().getNumberOnCell() == 0) {
+            int num = NumberOnCell;
+            NumberOnCell = this.getRightCell().getNumberOnCell();
+            getRightCell().NumberOnCell = num;
+            this.getRightCell().repaint();
+
+        } else if (getLeftCell().getNumberOnCell() == 0) {
+            int num = NumberOnCell;
+            NumberOnCell = this.getLeftCell().getNumberOnCell();
+            getLeftCell().NumberOnCell = num;
+            this.getLeftCell().repaint();
         }
         repaint();
-        this.getDownCell().repaint();
     }
 
     public void paintComponent(Graphics g) {
         g.setColor(Color.GREEN);
         g.drawRect(0, 0, 128, 128);
         g.setFont(font);
-        if (this.getNumberOnCell() != 0) g.drawString(this.NumberOnCell + "", 50,  80);
+        if (this.getNumberOnCell() != 0) g.drawString(this.NumberOnCell + "", 50, 80);
     }
 
     //-----------------------------------------------------------------
 
     public void mouseClicked(MouseEvent me) {
-        if (canChange()&& mousePressed) {
-            this.changeRight();
-            this.changeLeft();
-            this.changeUp();
-            this.changeDown();
-        }
-        System.out.println("Mouse clicked."); // Произведен щелчок кнопкой мыши
     }
 
-    // обработать событие наведения курсора мыши
     public void mouseEntered(MouseEvent me) {
-        System.out.println("Курсор на ячейки со значением: " + NumberOnCell); // Курсор наведен
+        System.out.println("Курсор на ячейке со значением: " + NumberOnCell); // Курсор наведен
     }
 
-    // обработать событие отведения курсора мыши
     public void mouseExited(MouseEvent me) {
     }
 
     public void mousePressed(MouseEvent me) {
         mousePressed = true;
+        if (canChange() && mousePressed) {
+            this.change();
+        }
     }
 
     public void mouseReleased(MouseEvent me) {
