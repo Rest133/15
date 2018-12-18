@@ -9,7 +9,6 @@ public class Game {
     public static void main(String[] args) {
         Game game = new Game();
         game.createNewGame(4);
-
     }
 
     public void createNewGame(int cellBoard) {
@@ -17,15 +16,15 @@ public class Game {
         board = new Board(cellBoard);
         Algorithm algorithm = new Algorithm();
         GUI gui = new GUI();
-        while (true) {
+        while (!endGame) {
             if (board.winGame()) {
                 System.out.println("Вы выиграли");
                 endGame = true;
-                gui.setVisible(false);
-                gui.disposeGui();
                 break;
             }
         }
+        gui.setVisible(false);
+        gui.disposeGui();
         if (endGame) createNewGame(cellBoard);
     }
 }

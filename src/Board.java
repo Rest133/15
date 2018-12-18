@@ -22,6 +22,7 @@ public class Board {
     }
 
     void createBoard() {
+        System.out.println("Новая игра");
         cellsList = new LinkedList<>();
         winList = new LinkedList<>();
         for (int i = 1; i < cells * cells; i++) {
@@ -65,6 +66,7 @@ public class Board {
             if (this.getCellsList().get(i).getNumberOnCell() == winList.get(i).getNumberOnCell()) count++;
         }
         if (count == this.getCellsList().size()) Game.endGame = true;
+
         return Game.endGame;
     }
 }

@@ -10,12 +10,12 @@ public class Algorithm {
                 //System.out.println(Game.board.getCellsList().get(k).getNumberOnCell() + ">" + Game.board.getCellsList().get(j).getNumberOnCell() + "?");//вывод на консоль последующего цикла
                 if (Game.board.getCellsList().get(k).getNumberOnCell() > Game.board.getCellsList().get(j).getNumberOnCell()
                         && Game.board.getCellsList().get(j).getNumberOnCell() != 0) {
-                    System.out.println("+");
+                //    System.out.println("+");
                     count++;
                 }
             }
         }
-        System.out.println("Сумма без нуля " + count);
+      //  System.out.println("Сумма без нуля " + count);
         count += indexO / Game.board.getCells();
         System.out.println("Сумма с нулем " + count);
         if (count % 2 == 0) {
