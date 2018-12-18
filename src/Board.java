@@ -2,11 +2,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-
 public class Board {
     private int cells;
     private List<Cell> cellsList;
     private List<Cell> winList;
+    private List<Cell> winList2;//выигрышных комбинации 2(одна с 14 - 15,вторая с 15 - 14) ++Создать метод СОЗДАНИЕ ГРАФА 37 строчка
+
     public Board(int c) {
         cells = c;
         createBoard();
@@ -16,23 +17,21 @@ public class Board {
         return cells;
     }
 
+    public List<Cell> getCellsList() {
+        return cellsList;
+    }
+
     void createBoard() {
         cellsList = new LinkedList<>();
-        winList= new LinkedList<>();
+        winList = new LinkedList<>();
         for (int i = 1; i < cells * cells; i++) {
             cellsList.add(new Cell(i));
             winList.add(new Cell(i));
         }
         cellsList.add(new Cell(0));
         winList.add(new Cell(0));
-//------------------------------------------------------
-        System.out.print("Новая игра: ");
         Collections.shuffle(cellsList);
-        for (int i = 0; i < winList.size(); i++) {
-            if (i % cells == 0) System.out.println();
-            System.out.print(" " + winList.get(i).getNumberOnCell());
-        }
-        System.out.println();
+
 //----------------------------------------------------- Создание графа
         for (int i = 0; i < cellsList.size() - 1; i++) {
             //   if ((i + 1) % ALL_CELL == 0) cellsList.get(i).setRightCell(Cell.NO_NEIGHBOUR);
@@ -59,20 +58,27 @@ public class Board {
         System.out.println();
     }
 
-    public List<Cell> getCellsList() {
-        return cellsList;
-    }
-
     public boolean winGame() {
+        Game.endGame = false;
         int count = 0;
         for (int i = 0; i < cellsList.size(); i++) {
             if (this.getCellsList().get(i).getNumberOnCell() == winList.get(i).getNumberOnCell()) count++;
         }
-        if (count == this.getCellsList().size()) return true;
-        return false;
+        if (count == this.getCellsList().size()) Game.endGame = true;
+        return Game.endGame;
     }
 }
+
 //------------------------------------------------------Ниже коды проверок(на всякий случай)
+
+
+     /*   for (int i = 0; i < winList.size(); i++) {
+        if (i % cells == 0) System.out.println();
+        System.out.print(" " + winList.get(i).getNumberOnCell());
+        }
+        System.out.println();
+    */
+
     /*    System.out.println(cellsList.size() + " - cellList"); //Начало новой игры
         System.out.print("Выигрышная комбинация:");
         for (int i = 0; i < cellsList.size(); i++) {

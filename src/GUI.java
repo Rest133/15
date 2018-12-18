@@ -15,10 +15,15 @@ public class GUI extends Canvas{
         jFrame.setSize(Game.board.getCells() * 128, Game.board.getCells() * 128);
         jFrame.add(jPanel);
         jPanel.setLayout(new GridLayout(Game.board.getCells(), Game.board.getCells()));
+        jFrame.setLocationRelativeTo(null);
 
         for (Cell x : Game.board.getCellsList()) {
             jPanel.add(x);
         }
+    }
+
+    public void disposeGui(){
+        this.jFrame.dispose();
     }
 
 }

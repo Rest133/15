@@ -105,7 +105,7 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
     }
 
     public void mouseEntered(MouseEvent me) {
-        System.out.println("Курсор на ячейке со значением: " + NumberOnCell); // Курсор наведен
+      //  System.out.println("Курсор на ячейке со значением: " + NumberOnCell); // Курсор наведен
     }
 
     public void mouseExited(MouseEvent me) {
