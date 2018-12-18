@@ -6,11 +6,26 @@ public class Board {
     private int cells;
     private List<Cell> cellsList;
     private List<Cell> winList;
-    private List<Cell> winList2;//выигрышных комбинации 2(одна с 14 - 15,вторая с 15 - 14) ++Создать метод СОЗДАНИЕ ГРАФА 37 строчка
 
     public Board(int c) {
         cells = c;
-        createBoard();
+        cellsList = new LinkedList<>();
+        winList = new LinkedList<>();
+        for (int i = 1; i < cells * cells; i++) {
+            cellsList.add(new Cell(i, 1));
+            winList.add(new Cell(i, 1));
+        }
+        cellsList.add(new Cell(0, 0));
+        winList.add(new Cell(0, 0));
+        Collections.shuffle(cellsList);
+
+        createGraph(cellsList);
+
+        for (int i = 0; i < cellsList.size(); i++) {
+            if (i % cells == 0) System.out.println();
+            System.out.print(" " + cellsList.get(i).getNumberOnCell());
+        }
+        System.out.println();
     }
 
     public int getCells() {
@@ -21,42 +36,27 @@ public class Board {
         return cellsList;
     }
 
-    void createBoard() {
-        System.out.println("Новая игра");
-        cellsList = new LinkedList<>();
-        winList = new LinkedList<>();
-        for (int i = 1; i < cells * cells; i++) {
-            cellsList.add(new Cell(i));
-            winList.add(new Cell(i));
+    void createGraph(List<Cell> list) {
+        for (int i = 0; i < list.size() - 1; i++) {//Боковые границы,внутренние клетки
+            list.get(i).setRightCell(list.get(i + 1));
+            list.get(list.size() - i - 1).setLeftCell(list.get(list.size() - i - 2));
         }
-        cellsList.add(new Cell(0));
-        winList.add(new Cell(0));
-        Collections.shuffle(cellsList);
-
-//----------------------------------------------------- Создание графа
-        for (int i = 0; i < cellsList.size() - 1; i++) {
-            //   if ((i + 1) % ALL_CELL == 0) cellsList.get(i).setRightCell(Cell.NO_NEIGHBOUR);
-            cellsList.get(i).setRightCell(cellsList.get(i + 1));
-            cellsList.get(cellsList.size() - i - 1).setLeftCell(cellsList.get(cellsList.size() - i - 2));
-        }
-        ((LinkedList<Cell>) cellsList).getLast().setRightCell(Cell.NO_NEIGHBOUR);
-        ((LinkedList<Cell>) cellsList).getFirst().setLeftCell(Cell.NO_NEIGHBOUR);
-
-        for (int i = 0; i < cells; i++) { //Верхние и нижние границы
-            cellsList.get(i).setUpCell(Cell.NO_NEIGHBOUR);
-            cellsList.get(cellsList.size() - i - 1).setDownCell(Cell.NO_NEIGHBOUR);
+        for (int i = 0; i < cells; i++) { //Боковые границы для клеток
+            list.get(i * cells).setLeftCell(Cell.NO_NEIGHBOUR);
+            if (i != 0) list.get(i * cells - 1).setRightCell(Cell.NO_NEIGHBOUR);
         }
 
-        for (int i = cells; i < cellsList.size(); i++) {//Внутренние клетки
-            cellsList.get(i).setUpCell(cellsList.get(i - cells));
-            cellsList.get(cellsList.size() - i - 1).setDownCell(cellsList.get(cellsList.size() - i + cells - 1));
+        ((LinkedList<Cell>) list).getLast().setRightCell(Cell.NO_NEIGHBOUR);
+        ((LinkedList<Cell>) list).getFirst().setLeftCell(Cell.NO_NEIGHBOUR);
+
+        for (int i = 0; i < cells; i++) { //Верхние и нижние границы для клеток
+            list.get(i).setUpCell(Cell.NO_NEIGHBOUR);
+            list.get(list.size() - i - 1).setDownCell(Cell.NO_NEIGHBOUR);
         }
-//------------------------------------------------------
-        for (int i = 0; i < cellsList.size(); i++) {
-            if (i % cells == 0) System.out.println();
-            System.out.print(" " + cellsList.get(i).getNumberOnCell());
+        for (int i = cells; i < list.size(); i++) {//Верхние и нижние границы, внутренние клетки
+            list.get(i).setUpCell(list.get(i - cells));
+            list.get(list.size() - i - 1).setDownCell(list.get(list.size() - i + cells - 1));
         }
-        System.out.println();
     }
 
     public boolean winGame() {
@@ -70,6 +70,7 @@ public class Board {
         return Game.endGame;
     }
 }
+
 
 //------------------------------------------------------Ниже коды проверок(на всякий случай)
 

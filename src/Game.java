@@ -12,6 +12,7 @@ public class Game {
     }
 
     public void createNewGame(int cellBoard) {
+        System.out.println("Новая игра");
         endGame = false;
         board = new Board(cellBoard);
         Algorithm algorithm = new Algorithm();
