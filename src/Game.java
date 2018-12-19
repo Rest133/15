@@ -8,11 +8,11 @@ public class Game {
 
     public static void main(String[] args) {
         Game game = new Game();
-        game.createNewGame(3);
+        game.createNewGame(2);
     }
 
     public void createNewGame(int cellBoard) {
-        System.out.println("Новая игра");
+        System.out.println("\nНовая игра");
         endGame = false;
         board = new Board(cellBoard);
         Algorithm algorithm = new Algorithm();

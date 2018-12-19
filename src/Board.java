@@ -25,7 +25,6 @@ public class Board {
             if (i % cells == 0) System.out.println();
             System.out.print(" " + cellsList.get(i).getNumberOnCell());
         }
-        System.out.println();
     }
 
     public int getCells() {
