@@ -1,21 +1,15 @@
 public class Edge {
     private Cell beginCell;
     private Cell endCell;
-    private int weight;
     private boolean wasVisited = false;
 
-    Edge(Cell node1, Cell node2, int w) {
+    Edge(Cell node1, Cell node2) {
         beginCell = node1;
         endCell = node2;
-        weight = w;
     }
 
     public void setWasVisited(boolean b) {
         wasVisited = b;
-    }
-
-    public void setWeight(int w) {
-        weight = w;
     }
 
     public Cell getBeginCell() {
@@ -24,10 +18,6 @@ public class Edge {
 
     public Cell getEndCell() {
         return endCell;
-    }
-
-    public int getWeight() {
-        return weight;
     }
 
     public boolean isWasVisited() {

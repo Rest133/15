@@ -9,7 +9,7 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 
 public class Cell extends JComponent implements MouseListener, MouseMotionListener {
-    static Cell NO_NEIGHBOUR = new Cell(-1,Integer.MAX_VALUE);
+    static Cell NO_NEIGHBOUR = new Cell(-1, Integer.MAX_VALUE);
 
     private int mass;
     private int numberOnCell;
@@ -21,7 +21,7 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
 
     private Font font = new Font("TimesRoman", Font.BOLD, 50);
 
-    Cell(int n,int m) {
+    Cell(int n, int m) {
         numberOnCell = n;
         this.addMouseListener(this);
         mass = m;
@@ -93,7 +93,7 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
         return hasO;
     }
 
-    public void change(Cell this) {
+    public void clickChange(Cell this) {
         int num = numberOnCell;
         if (getUpCell().getNumberOnCell() == 0) {
             numberOnCell = this.getUpCell().getNumberOnCell();
@@ -117,6 +117,48 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
         }
         repaint();
     } // улучшить
+//-------------------------------------------------------Команды для бота
+    public void changeRight(Cell this) {
+        int num = numberOnCell;
+        if (getRightCell().getNumberOnCell() == 0) {
+            numberOnCell = this.getRightCell().getNumberOnCell();
+            getRightCell().numberOnCell = num;
+            this.getRightCell().repaint();
+        }
+        repaint();
+    }
+
+    public void changeLeft(Cell this) {
+        int num = numberOnCell;
+        if (getLeftCell().getNumberOnCell() == 0) {
+            numberOnCell = this.getLeftCell().getNumberOnCell();
+            getLeftCell().numberOnCell = num;
+            this.getLeftCell().repaint();
+        }
+        repaint();
+    }
+
+    public void changeUp(Cell this) {
+        int num = numberOnCell;
+        if (getUpCell().getNumberOnCell() == 0) {
+            numberOnCell = this.getUpCell().getNumberOnCell();
+            getUpCell().numberOnCell = num;
+            this.getUpCell().repaint();
+        }
+        repaint();
+    }
+
+    public void changeDown(Cell this) {
+        int num = numberOnCell;
+        if (getDownCell().getNumberOnCell() == 0) {
+            numberOnCell = this.getDownCell().getNumberOnCell();
+            getDownCell().numberOnCell = num;
+            this.getDownCell().repaint();
+        }
+        repaint();
+    }
+
+//-------------------------------------------------------
 
     public void paintComponent(Graphics g) {
         g.setColor(Color.GREEN);
@@ -140,7 +182,7 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
     public void mousePressed(MouseEvent me) {
         mousePressed = true;
         if (canChange() && mousePressed) {
-            this.change();
+            this.clickChange();
         }
     }
 
