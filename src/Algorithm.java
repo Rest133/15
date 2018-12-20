@@ -60,9 +60,10 @@ public class Algorithm {
                     int index = currentEdge.getEndCell().getNumberOnCell();
                     System.out.println("Начинаю продвижение к клетке " + currentEdge.getBeginCell().getNumberOnCell());
                     System.out.println(currentEdge);
-
                     smallPath.addAll(findPath(Game.board.getCellsList().get(indexO), Game.board.getCellsList().get(findCell(index))));
-                    cellGoTo(smallPath);
+                    cellGoTo(Game.board.getCellsList().get(findCell(i)),smallPath);
+                    System.out.println("Клетка поменялась");
+                    
                 }
             }
         }
@@ -151,7 +152,7 @@ public class Algorithm {
         return cameFrom;
     }
 
-    public void cellGoTo(LinkedList<Edge> path) {
+    public void cellGoTo(Cell cell,LinkedList<Edge> path) {
         LinkedList<Edge> invertPath = new LinkedList<>();
         while (!path.isEmpty()) {
             // System.out.println("InvertPath = " + path.getLast());
@@ -179,6 +180,12 @@ public class Algorithm {
                 Game.board.getCellsList().get(number).changeRight();
             }
         }
+        try {
+            Thread.sleep(400);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        cell.clickChange();
         System.out.println("Путь пройден");
     }
 
