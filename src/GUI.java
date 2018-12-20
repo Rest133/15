@@ -10,7 +10,6 @@ public class GUI extends Canvas{
         jFrame.setBackground(Color.DARK_GRAY);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.add(this);
-        jFrame.pack();
         jFrame.setVisible(true);
         jFrame.setResizable(false);
         jFrame.setLocationRelativeTo(null);

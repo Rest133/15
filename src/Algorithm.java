@@ -1,50 +1,54 @@
-import java.util.LinkedList;
+import java.util.*;
 
 public class Algorithm {
     private boolean odd = false;
     private LinkedList<Edge> edgesList = new LinkedList<>();
-    LinkedList<Edge> answer = new LinkedList<>();
 
     Algorithm() {
-        int indexO = 1;
+        int indexO = 0;
         int count = 0;
 //---------------------------------------------------------------------------------Поиск решаемости игры
         for (int k = 0; k < Game.board.getCells() * Game.board.getCells(); k++) {
             for (int j = k; j < Game.board.getCellsList().size(); j++) {
                 if (Game.board.getCellsList().get(k).getNumberOnCell() == 0)
                     indexO = k;//нахождение ячейки с нулем и запись соответсвующего индекса
-                //System.out.println(Game.board.getCellsList().get(k).getNumberOnCell() + ">" + Game.board.getCellsList().get(j).getNumberOnCell() + "?");//вывод на консоль последующего цикла
                 if (Game.board.getCellsList().get(k).getNumberOnCell() > Game.board.getCellsList().get(j).getNumberOnCell()
                         && Game.board.getCellsList().get(j).getNumberOnCell() != 0) {
-                    //    System.out.println("+");
                     count++;
                 }
             }
         }
-        //  System.out.println("Сумма без нуля " + count);
         count += indexO / Game.board.getCells();
-        System.out.println("\nСумма с нулем " + count + "\n");
         if (Game.board.getCells() % 2 != 0) odd = true;
 
-        if (count % 2 == 0) {                                               //При нечетных getCells() что делать?
-            System.out.println("Нерешаемая комбинация");
-            Game.endGame = true;
+        System.out.println("\nНечетность клеток: " + odd + "\nСумма с нулем " + count + "\n");
+
+        if (odd) {                                                              //Не раптит
+            if (count % 2 != 0) {
+                System.out.println("Нерешаемая комбинация");
+                Game.endGame = true;
+            } else {
+                solverBot();
+            }
         } else {
+            if (count % 2 == 0) {
+                System.out.println("Нерешаемая комбинация");
+                Game.endGame = true;
+            } else {
 //-----------------------------------------------------------------------------------Запуск решателя
-            solverBot();
+                solverBot();
+            }
         }
+
+
     }
 
     public void solverBot() {
-        LinkedList<Edge> pathTo = new LinkedList<>();
-        System.out.println(findCell(0));
-        addEdges();
         System.out.println("Поиск ...");
         findPath(Game.board.getCellsList().get(findCell(0)), Game.board.getCellsList().get(findCell(1)));
         System.out.println("Поиск завершен");
-        for (Edge x : answer) {
-            System.out.println(x.toString());
-        }
+        
+        //  Thread.sleep(800);
 
     }
 
@@ -65,13 +69,90 @@ public class Algorithm {
             if (x.getUpCell().getNumberOnCell() != -1) edgesList.add(new Edge(x, x.getUpCell(), 1));
             if (x.getDownCell().getNumberOnCell() != -1) edgesList.add(new Edge(x, x.getDownCell(), 1));
         }
+        System.out.println("Все пути");
         for (Edge x : edgesList) {
             System.out.println(x.toString());
         }
     }
 
-    public void findPath(Cell start, Cell end) {              //Возвращает List, не void
-        LinkedList<Edge> smallPath = new LinkedList<>();
+    public LinkedList findPath(Cell start, Cell end) {//Возвращает List, не void
+        addEdges();
+        Queue edgesStack = new Queue();
+        LinkedList<Edge> cameFrom = new LinkedList<>();
+        System.out.println("\nStart = " + start.getNumberOnCell() + "; End = " + end.getNumberOnCell());
+//-----------------------------------------------------------------------------------------------Алгоритм поиска(модифицированный обход в ширину
+        for (Edge x : edgesList) {
+            if (x.getBeginCell() == start && !x.isWasVisited()) {
+                if (x.getEndCell().getNumberOnCell() == end.getNumberOnCell()) {
+                    System.out.println("Путь найден");
+                    cameFrom.add(x);
+                    return cameFrom;
+                } else {
+                    x.setWasVisited(true);
+                    edgesStack.insert(x);
+                    System.out.println(x);
+                }
+            }
+        }
+
+        while (!edgesStack.isEmpty()) {
+            Edge currentEdge = edgesStack.remove();
+            System.out.println("CurrentEdge = " + currentEdge);
+            cameFrom.add(currentEdge);
+            if (currentEdge.getEndCell().getNumberOnCell() == end.getNumberOnCell()) break;
+            for (Edge x : edgesList) {
+                int w = 4;
+                if (currentEdge.getEndCell().getNumberOnCell() == x.getBeginCell().getNumberOnCell() && !x.isWasVisited()) {
+                    x.setWasVisited(true);
+                    edgesStack.insert(x);
+                    x.setWeight(++w);
+                }
+            }
+
+        }
+        for (Edge x : edgesList) {
+            x.setWasVisited(false);
+        }
+        for (Edge x : cameFrom) {
+            System.out.println("CameFrom = " + x);
+        }
+//---------------------------------------------------------------------------------------Инвертирование полученного списка
+        LinkedList<Edge> invert = new LinkedList<>();
+        invert.add(cameFrom.getLast());
+
+        while (invert.getLast().getBeginCell().getNumberOnCell() != start.getNumberOnCell()) {
+            if (invert.getLast().getBeginCell().getNumberOnCell() == cameFrom.getLast().getEndCell().getNumberOnCell()) {
+                System.out.println("It's worked");
+                invert.add(cameFrom.getLast());
+            }else cameFrom.removeLast();
+        }
+
+        cameFrom.clear();
+        for (Edge x : invert) {
+            System.out.println("cameFrom = " + x);
+            cameFrom.add(x);
+        }
+
+        return cameFrom;
+    }
+
+    public void cellGoTo(Cell cell,LinkedList path){
+
+    }
+
+}
+
+/*
+
+   for (Cell x : Game.board.getCellsList()) { //Обход доски для каждой клетки
+            System.out.println();
+            System.out.println("  " + x.getUpCell().getNumberOnCell());
+            System.out.println(x.getLeftCell().getNumberOnCell() + " " + x.getNumberOnCell() + " " + x.getRightCell().getNumberOnCell());
+            System.out.println("  " + x.getDownCell().getNumberOnCell());
+        }
+
+
+        //-----------------------------------------------------------
         worked:
         {
             System.out.println("\nНовая итерация");
@@ -101,18 +182,39 @@ public class Algorithm {
             }
 
         }
-    }
 
-    public void goTo(Cell currentCell, LinkedList<Edge> path) {
-    }
-}
-/*
 
-   for (Cell x : Game.board.getCellsList()) { //Обход доски для каждой клетки
-            System.out.println();
-            System.out.println("  " + x.getUpCell().getNumberOnCell());
-            System.out.println(x.getLeftCell().getNumberOnCell() + " " + x.getNumberOnCell() + " " + x.getRightCell().getNumberOnCell());
-            System.out.println("  " + x.getDownCell().getNumberOnCell());
+        number2!:
+
+                for (Edge x : edgesList) {
+            if (x.getBeginCell() == start && !x.isWasVisited()) {
+                if (x.getEndCell().getNumberOnCell() == end.getNumberOnCell()) {
+                    System.out.println("Путь найден");
+                    cameFrom.add(x);
+                    return cameFrom;
+                } else {
+                    x.setWasVisited(true);
+                    edgesStack.insert(x);
+                    System.out.println(x);
+                }
+            }
+        }
+        System.out.println("Новый лист завершен");
+        while (!edgesStack.isEmpty()) {
+            Edge currentEdge = edgesStack.remove();
+            System.out.println("CurrentEdge = " + currentEdge);
+
+            for (Edge x : edgesList) {
+                int w = 4;
+                if (currentEdge.getEndCell().getNumberOnCell() == x.getBeginCell().getNumberOnCell() && !x.isWasVisited()) {
+                    x.setWasVisited(true);
+                    edgesStack.insert(x);
+                    x.setWeight(++w);
+                }
+            }
+            if (currentEdge.getEndCell().getNumberOnCell() == end.getNumberOnCell() || currentEdge.getWeight() < Game.board.getCells()+Game.board.getCells()/2) {
+                cameFrom.add(currentEdge);
+            }
         }
 
  */

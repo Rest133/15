@@ -13,7 +13,7 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
 
     private int mass;
     private int numberOnCell;
-    private Cell algorithmNeighbour = null;
+    private Cell cameFromNeighbour = null;
     private Cell leftCell, rightCell, upCell, downCell;
     private boolean hasO = false; //пригодится или нет?
     private boolean mousePressed = false;
@@ -47,8 +47,8 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
         this.mass = mass;
     }
 
-    public void setAlgorithmNeighbour(Cell algorithmNeighbour) {
-        this.algorithmNeighbour = algorithmNeighbour;
+    public void setCameFromNeighbour(Cell algorithmNeighbour) {
+        this.cameFromNeighbour = algorithmNeighbour;
     }
 
     public void setWasVisited(boolean wasVisited) {
@@ -79,8 +79,8 @@ public class Cell extends JComponent implements MouseListener, MouseMotionListen
         return downCell;
     }
 
-    public Cell getAlgorithmNeighbour() {
-        return algorithmNeighbour;
+    public Cell getСameFromNeighbour() {
+        return cameFromNeighbour;
     }
 
     public boolean isWasVisited() {

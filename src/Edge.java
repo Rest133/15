@@ -14,6 +14,10 @@ public class Edge {
         wasVisited = b;
     }
 
+    public void setWeight(int w) {
+        weight = w;
+    }
+
     public Cell getBeginCell() {
         return beginCell;
     }
