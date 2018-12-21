@@ -28,7 +28,7 @@ public class MouseEvents implements MouseListener, MouseMotionListener {//дод
 
     public void mousePressed(MouseEvent me) {
         mousePressed = true;
-        if (cell.canChange() && mousePressed) {
+        if (mousePressed) {
             cell.clickChange();
         }
     }

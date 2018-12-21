@@ -24,6 +24,11 @@ public class Edge {
         return wasVisited;
     }
 
+    public boolean hasUntouchableCell() {
+        if (this.beginCell.isUntouchable() || this.endCell.isUntouchable()) return true;
+        else return false;
+    }
+
     public String toString() {
         return "(" + beginCell.getNumberOnCell() + ")" + " - " + "(" + endCell.getNumberOnCell() + ")";
     }

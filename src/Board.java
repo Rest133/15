@@ -12,19 +12,16 @@ public class Board {
         cellsList = new LinkedList<>();
         winList = new LinkedList<>();
         for (int i = 1; i < cells * cells; i++) {
-            cellsList.add(new Cell(i, 1));
-            winList.add(new Cell(i, 1));
+            cellsList.add(new Cell(i));
+            winList.add(new Cell(i));
         }
-        cellsList.add(new Cell(0, 0));
-        winList.add(new Cell(0, 0));
+        cellsList.add(new Cell(0));
+        winList.add(new Cell(0));
         Collections.shuffle(cellsList);
 
         createGraph(cellsList);
 
-        for (int i = 0; i < cellsList.size(); i++) {
-            if (i % cells == 0) System.out.println();
-            System.out.print(" " + cellsList.get(i).getNumberOnCell());
-        }
+        lookAtBoard();
     }
 
     public int getCells() {
@@ -68,6 +65,14 @@ public class Board {
 
         return Game.endGame;
     }
+
+    public void lookAtBoard() {
+        for (int i = 0; i < cellsList.size(); i++) {
+            if (i % cells == 0) System.out.println();
+            System.out.print(" " + cellsList.get(i).getNumberOnCell());
+        }
+    }
+
 }
 
 

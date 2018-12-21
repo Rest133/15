@@ -45,34 +45,28 @@ public class Algorithm {
     }
 
     public void solverBot() {
-        Stack<Edge> pathToCell = new Stack<>();
-        for (int i = 1; i < Game.board.getCellsList().size(); i++) {
-            System.out.println("Поиск ..." + (i));
-            if (Game.board.getCellsList().get(i - 1).getNumberOnCell() != Game.board.getCellsList().get(findCell(i)).getNumberOnCell()) {
-                pathToCell.addAll(findPath(Game.board.getCellsList().get(findCell(i)), Game.board.getCellsList().get(i - 1)));
-                System.out.println("Поиск завершен");
-                for (Edge x : pathToCell) {
-                    System.out.println(x);
-                }
-                while (!pathToCell.isEmpty()) {
-                    LinkedList<Edge> smallPath = new LinkedList<>();
-                    Edge currentEdge = pathToCell.pop();
-                    int index = currentEdge.getEndCell().getNumberOnCell();
-                    System.out.println("Начинаю продвижение к клетке " + currentEdge.getBeginCell().getNumberOnCell());
-                    System.out.println(currentEdge);
-                    smallPath.addAll(findPath(Game.board.getCellsList().get(indexO), Game.board.getCellsList().get(findCell(index))));
-                    cellGoTo(Game.board.getCellsList().get(findCell(i)),smallPath);
-                    System.out.println("Клетка поменялась");
-                    
-                }
-            }
+        LinkedList<Edge> pathToCell = new LinkedList<>();
+        Cell currentCell = Game.board.getCellsList().get(findCell(0));
+
+        Cell targetCell = Game.board.getCellsList().get(findCell(1));
+        System.out.println("Поиск ..." + (1));
+        pathToCell.addAll(findPath(targetCell, Game.board.getCellsList().get(0)));//Путь от 1 до начала доски(index 0)
+        System.out.println("Поиск завершен");
+        for (Edge x : pathToCell) {
+            System.out.println(x);
         }
+
+        LinkedList<Edge> smallPath = new LinkedList<>();
+        smallPath.addAll(findPath(currentCell, pathToCell.getLast().getEndCell()));
+        cellGoTo(targetCell, smallPath);
+        pathToCell.clear();
     }
+
 
     public int findCell(int num) {
         for (Cell x : Game.board.getCellsList()) {
             if (x.getNumberOnCell() == num) {
-                //System.out.println("Ячейка с номером " + x.getNumberOnCell() + " найдена");
+                System.out.println("\nЯчейка с номером " + x.getNumberOnCell() + " найдена");
                 return Game.board.getCellsList().indexOf(x);
             }
         }
@@ -100,7 +94,7 @@ public class Algorithm {
         //  System.out.println("\nStart = " + start.getNumberOnCell() + "; End = " + end.getNumberOnCell());
 //-----------------------------------------------------------------------------------------------Алгоритм поиска(модифицированный обход в ширину
         for (Edge x : edgesList) {
-            if (x.getBeginCell() == start && !x.isWasVisited()) {
+            if (x.getBeginCell() == start && !x.isWasVisited() && !x.hasUntouchableCell()) {
                 if (x.getEndCell().getNumberOnCell() == end.getNumberOnCell()) {
                     // System.out.println("Путь найден");
                     cameFrom.add(x);
@@ -152,41 +146,28 @@ public class Algorithm {
         return cameFrom;
     }
 
-    public void cellGoTo(Cell cell,LinkedList<Edge> path) {
+    public void cellGoTo(Cell cell, LinkedList<Edge> path) { //добавить untouchable
         LinkedList<Edge> invertPath = new LinkedList<>();
         while (!path.isEmpty()) {
-            // System.out.println("InvertPath = " + path.getLast());
+            System.out.println("InvertPath = " + path.getLast());
             invertPath.add(path.getLast());
             path.removeLast();
         }
         for (Edge x : invertPath) {
             System.out.println("X = " + x);
+            int number = findCell(x.getEndCell().getNumberOnCell());
             try {
                 Thread.sleep(800);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            int number = findCell(x.getEndCell().getNumberOnCell());
-            if (x.getEndCell().getUpCell().getNumberOnCell() == 0) {
-                Game.board.getCellsList().get(number).changeUp();
-            }
-            if (x.getEndCell().getDownCell().getNumberOnCell() == 0) {
-                Game.board.getCellsList().get(number).changeDown();
-            }
-            if (x.getEndCell().getLeftCell().getNumberOnCell() == 0) {
-                Game.board.getCellsList().get(number).changeLeft();
-            }
-            if (x.getEndCell().getRightCell().getNumberOnCell() == 0) {
-                Game.board.getCellsList().get(number).changeRight();
-            }
+            x.getEndCell().clickChange();
+            // cell.clickChange();
         }
-        try {
-            Thread.sleep(400);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        cell.clickChange();
+
+
         System.out.println("Путь пройден");
+        Game.board.lookAtBoard();
     }
 
 }
@@ -266,4 +247,27 @@ public class Algorithm {
             }
         }
 
+
+//--------------------------------------------------------goTOCELL
+for (Edge x : invertPath) {
+            System.out.println("X = " + x);
+            try {
+                Thread.sleep(800);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            int number = findCell(x.getEndCell().getNumberOnCell());
+            if (x.getEndCell().getUpCell().getNumberOnCell() == 0) {
+                Game.board.getCellsList().get(number).changeUp();
+            }
+            if (x.getEndCell().getDownCell().getNumberOnCell() == 0) {
+                Game.board.getCellsList().get(number).changeDown();
+            }
+            if (x.getEndCell().getLeftCell().getNumberOnCell() == 0) {
+                Game.board.getCellsList().get(number).changeLeft();
+            }
+            if (x.getEndCell().getRightCell().getNumberOnCell() == 0) {
+                Game.board.getCellsList().get(number).changeRight();
+            }
+        }
  */
